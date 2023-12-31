@@ -10,8 +10,8 @@ class Gasto {
         this.descripcion = descripcion;
     }
 
-    async guardar() {
-        const [result] = await pool.query('INSERT INTO Gastos (UsuarioID, GrupoID, CategoriaID, Fecha, Monto, Descripcion) VALUES (?, ?, ?, ?, ?, ?)', [this.usuarioId, this.grupoId, this.categoriaId, this.fecha, this.monto, this.descripcion]);
+    async guardar(connection) {
+        const [result] = await connection.query('INSERT INTO Gastos (UsuarioID, GrupoID, CategoriaID, Fecha, Monto, Descripcion) VALUES (?, ?, ?, ?, ?, ?)', [this.usuarioId, this.grupoId, this.categoriaId, this.fecha, this.monto, this.descripcion]);
         return result;
     }
 

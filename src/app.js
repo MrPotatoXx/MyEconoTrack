@@ -7,9 +7,9 @@ const gruposRoutes = require('./routes/gruposRoutes');
 const categoriaRoutes = require('./routes/categoriasRoutes');
 const app = express();
 
-app.use(express.json()); // Middleware para parsear JSON
+app.use(express.json());
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 app.use('/usuarios', usuariosRoutes);
 app.use('/gastos', gastosRoutes);

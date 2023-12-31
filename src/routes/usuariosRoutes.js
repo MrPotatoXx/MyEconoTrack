@@ -1,8 +1,8 @@
 const express = require('express');
-const { registrarUsuario, autenticarUsuario, obtenerSaldo } = require('../controllers/usuariosController');
+const { registrarUsuario, registrarUsuarioValidaciones, autenticarUsuario, obtenerSaldo } = require('../controllers/usuariosController');
 const router = express.Router();
 
-router.post('/registrar', registrarUsuario);
+router.post('/registrar', registrarUsuarioValidaciones, registrarUsuario);
 router.post('/autenticar', autenticarUsuario);
 router.get('/saldo/:usuarioId', obtenerSaldo);
 

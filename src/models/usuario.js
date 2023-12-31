@@ -1,11 +1,13 @@
+// src/models/usuario.js
 const pool = require('../config/database');
 const bcrypt = require('bcrypt');
 
 class Usuario {
-    constructor(nombre, correoElectronico, contraseña) {
+    constructor(nombre, correoElectronico, contraseña, usuarioId = null) {
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.contraseña = contraseña;
+        this.usuarioId = usuarioId;
     }
 
     async guardar() {
@@ -19,17 +21,13 @@ class Usuario {
         return users[0];
     }
 
-    async actualizarSaldo(monto) {
-        const [usuario] = await pool.query('SELECT Saldo FROM Usuarios WHERE UsuarioID = ?', [this.UsuarioID]);
+    async actualizarSaldo(monto, connection) {
+        const [usuario] = await connection.query('SELECT Saldo FROM Usuarios WHERE UsuarioID = ?', [this.usuarioId]);
         const saldoActual = usuario[0].Saldo;
-
         const nuevoSaldo = saldoActual - monto;
-        await pool.query('UPDATE Usuarios SET Saldo = ? WHERE UsuarioID = ?', [nuevoSaldo, this.UsuarioID]);
-    }
 
-    static async obtenerSaldo(usuarioId) {
-        const [usuario] = await pool.query('SELECT Saldo FROM Usuarios WHERE UsuarioID = ?', [usuarioId]);
-        return usuario[0].Saldo;
+        await connection.query('UPDATE Usuarios SET Saldo = ? WHERE UsuarioID = ?', [nuevoSaldo, this.usuarioId]);
+        await connection.query('INSERT INTO HistorialSaldo (UsuarioID, Cambio, SaldoDespues) VALUES (?, ?, ?)', [this.usuarioId, -monto, nuevoSaldo]);
     }
 }
 

@@ -1,11 +1,22 @@
-const Usuario = require('../models/usuarios');
+const Usuario = require('../models/usuario');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
+const { body, validationResult } = require('express-validator');
 
 const secretKey = process.env.SECRET_KEY;
 
+const registrarUsuarioValidaciones = [
+    body('nombre').trim().not().isEmpty().withMessage('El nombre es requerido'),
+    body('correoElectronico').isEmail().withMessage('Debe ser un correo electrónico válido'),
+    body('contraseña').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres')
+];
+
 async function registrarUsuario(req, res) {
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+        return res.status(400).json({ errores: errores.array() });
+    }
+
     try {
         const { nombre, correoElectronico, contraseña } = req.body;
         const usuario = new Usuario(nombre, correoElectronico, contraseña);
@@ -44,4 +55,4 @@ async function obtenerSaldo(req, res) {
     }
 }
 
-module.exports = { registrarUsuario, autenticarUsuario, obtenerSaldo };
+module.exports = { registrarUsuario, autenticarUsuario, obtenerSaldo, registrarUsuarioValidaciones };

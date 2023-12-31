@@ -3,6 +3,7 @@ const { crearCategoria, obtenerCategorias } = require('../controllers/categorias
 const router = express.Router();
 
 router.post('/crear', crearCategoria);
+
 router.get('/', obtenerCategorias);
 
 module.exports = router;
