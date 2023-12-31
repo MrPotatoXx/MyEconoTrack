@@ -18,6 +18,19 @@ class Usuario {
         const [users] = await pool.query('SELECT * FROM Usuarios WHERE CorreoElectronico = ?', [correoElectronico]);
         return users[0];
     }
+
+    async actualizarSaldo(monto) {
+        const [usuario] = await pool.query('SELECT Saldo FROM Usuarios WHERE UsuarioID = ?', [this.UsuarioID]);
+        const saldoActual = usuario[0].Saldo;
+
+        const nuevoSaldo = saldoActual - monto;
+        await pool.query('UPDATE Usuarios SET Saldo = ? WHERE UsuarioID = ?', [nuevoSaldo, this.UsuarioID]);
+    }
+
+    static async obtenerSaldo(usuarioId) {
+        const [usuario] = await pool.query('SELECT Saldo FROM Usuarios WHERE UsuarioID = ?', [usuarioId]);
+        return usuario[0].Saldo;
+    }
 }
 
 module.exports = Usuario;

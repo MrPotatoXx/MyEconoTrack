@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json()); // Middleware para parsear JSON
 
-const PORT = process.env.PORT; // Añade un puerto predeterminado por si acaso
+const PORT = process.env.PORT;
 
 app.use('/usuarios', usuariosRoutes);
 app.use('/gastos', gastosRoutes);

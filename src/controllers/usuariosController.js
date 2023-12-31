@@ -33,4 +33,15 @@ async function autenticarUsuario(req, res) {
     }
 }
 
-module.exports = { registrarUsuario, autenticarUsuario };
+async function obtenerSaldo(req, res) {
+    try {
+        const { usuarioId } = req.params;
+        const saldo = await Usuario.obtenerSaldo(usuarioId);
+
+        res.send({ saldo });
+    } catch (error) {
+        res.status(500).send({ message: 'Error al obtener el saldo', error });
+    }
+}
+
+module.exports = { registrarUsuario, autenticarUsuario, obtenerSaldo };
