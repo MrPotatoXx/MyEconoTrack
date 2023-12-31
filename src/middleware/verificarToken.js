@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 
 const verificarToken = (req, res, next) => {
-    const token = req.headers['authorization'];
+    const authtoken = req.headers['authorization'];
+	const token = authtoken && authtoken.split(' ')[1];
 
     if (!token) {
         return res.status(403).send({ message: 'No se proporcionó token de autenticación.' });

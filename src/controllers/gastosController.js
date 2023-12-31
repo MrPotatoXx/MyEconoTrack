@@ -5,7 +5,7 @@ const { body, validationResult } = require('express-validator');
 
 const crearGastoValidaciones = [
     body('usuarioId').isInt().withMessage('ID de usuario debe ser un número entero'),
-    body('grupoId').optional().isInt().withMessage('ID de grupo debe ser un número entero'),
+    body('grupoId').optional({ nullable: true, checkFalsy: true }).isInt().withMessage('ID de grupo debe ser un número entero'),
     body('categoriaId').isInt().withMessage('ID de categoría debe ser un número entero'),
     body('fecha').isISO8601().withMessage('La fecha debe estar en formato ISO 8601'),
     body('monto').isDecimal().withMessage('El monto debe ser un número decimal'),
