@@ -1,6 +1,15 @@
-const Categoria = require('../models/categoria');
+const { body, validationResult } = require('express-validator');
+
+const crearCategoriaValidaciones = [
+    body('nombre').trim().escape().not().isEmpty().withMessage('El nombre de la categoría es requerido'),
+    body('descripcion').trim().escape().optional()
+];
 
 async function crearCategoria(req, res) {
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+        return res.status(400).json({ errores: errores.array() });
+    }
     try {
         const { nombre, descripcion } = req.body;
         const categoria = new Categoria(nombre, descripcion);
@@ -21,4 +30,4 @@ async function obtenerCategorias(req, res) {
     }
 }
 
-module.exports = { crearCategoria, obtenerCategorias };
+module.exports = { crearCategoria, obtenerCategorias, crearCategoriaValidaciones };

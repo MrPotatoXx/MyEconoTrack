@@ -1,8 +1,8 @@
 const express = require('express');
-const { crearGasto, crearGastoValidaciones, obtenerGastosPorUsuario } = require('../controllers/gastosController');
+const { crearGrupo, obtenerGruposPorUsuario, crearGrupoValidaciones } = require('../controllers/gruposController');
 const router = express.Router();
 
-router.post('/crear', crearGastoValidaciones, crearGasto);
-router.get('/usuario/:usuarioId', obtenerGastosPorUsuario);
+router.post('/crear', crearGrupoValidaciones, crearGrupo);
+router.get('/usuario/:creadorId', obtenerGruposPorUsuario);
 
 module.exports = router;
